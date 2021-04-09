@@ -1,0 +1,15 @@
+name: 'sync-strings-action'
+description: 'Sync strings from src to dst. Both src and dst need to be checked out repos.'
+inputs:
+  src:
+    description: "Source project"
+    required: true
+  dst:
+    description: "Destination project"
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.src }}
+    - ${{ inputs.dst }}
