@@ -1,5 +1,7 @@
 FROM python:3.9
 
+USER 1001
+
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
