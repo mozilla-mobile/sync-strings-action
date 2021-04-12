@@ -1,6 +1,7 @@
 FROM python:3.9
 
-USER 1001
+RUN useradd -D -u 1001 runner
+USER runner
 
 WORKDIR /usr/src/app
 
