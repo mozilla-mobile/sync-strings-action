@@ -43,7 +43,7 @@ def all_strings_xml_paths(repo_path, locales):
     """Yield all combinations of strings.xml paths and locales. Returns a relative path."""
     with open(os.path.join(repo_path, "l10n.toml")) as main_toml_fp:
         main_l10n_toml = tomlkit.loads(main_toml_fp.read())
-        for locale in main_l10n_toml["locales"]:
+        for locale in locales:
             pathname = main_l10n_toml["paths"][0]["l10n"].replace("{android_locale}", android_locale(locale))
             for strings_xml_path in glob.glob(os.path.join(repo_path, pathname), recursive=True):
                 yield os.path.relpath(strings_xml_path, repo_path)
