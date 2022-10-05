@@ -31,17 +31,17 @@ def android_locale(locale):
 def release_locales(repo_path):
     """Load the list of locales from l10n-release.toml or from l10n.toml as fallback."""
     for filename in ("l10n-release.toml", "l10n.toml"):
-        toml_path = os.path.join(repo_path, filename)
+        toml_path = os.path.join(repo_path, "android-components", filename)
         if os.path.exists(toml_path):
             with open(toml_path) as toml_fp:
                 l10n_toml = tomlkit.loads(toml_fp.read())
                 log(f"Returning strings from {toml_path}")
                 return l10n_toml["locales"]
-        
+
 
 def all_strings_xml_paths(repo_path, locales):
     """Yield all combinations of strings.xml paths and locales. Returns a relative path."""
-    with open(os.path.join(repo_path, "l10n.toml")) as main_toml_fp:
+    with open(os.path.join(repo_path, "android-components/l10n.toml")) as main_toml_fp:
         main_l10n_toml = tomlkit.loads(main_toml_fp.read())
         for locale in locales:
             pathname = main_l10n_toml["paths"][0]["l10n"].replace("{android_locale}", android_locale(locale))
