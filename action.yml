@@ -1,6 +1,9 @@
 name: 'sync-strings-action'
 description: 'Sync strings from src to dst. Both src and dst need to be checked out repos.'
 inputs:
+  project:
+    description: 'The project subdirectory to work on - android-components, fenix, focus-android.'
+    required: true
   src:
     description: "Source project"
     required: true
