@@ -15,10 +15,11 @@ Example usage in a _GitHub Workflow_ file:
         with:
           path: beta
           ref: releases_v88.0.0
-          
+
       - name: "Sync Strings"
         uses: st3fan/sync-strings-action@main
         with:
+          project: android-components
           src: main
           dst: beta
 

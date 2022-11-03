@@ -28,10 +28,10 @@ def android_locale(locale):
     return locale
 
 
-def release_locales(repo_path):
+def release_locales(repo_path, project_path):
     """Load the list of locales from l10n-release.toml or from l10n.toml as fallback."""
     for filename in ("l10n-release.toml", "l10n.toml"):
-        toml_path = os.path.join(repo_path, "android-components", filename)
+        toml_path = os.path.join(repo_path, project_path, filename)
         if os.path.exists(toml_path):
             with open(toml_path) as toml_fp:
                 l10n_toml = tomlkit.loads(toml_fp.read())
@@ -39,13 +39,13 @@ def release_locales(repo_path):
                 return l10n_toml["locales"]
 
 
-def all_strings_xml_paths(repo_path, locales):
+def all_strings_xml_paths(repo_path, project_path, locales):
     """Yield all combinations of strings.xml paths and locales. Returns a relative path."""
-    with open(os.path.join(repo_path, "android-components/l10n.toml")) as main_toml_fp:
+    with open(os.path.join(repo_path, project_path, "l10n.toml")) as main_toml_fp:
         main_l10n_toml = tomlkit.loads(main_toml_fp.read())
         for locale in locales:
             pathname = main_l10n_toml["paths"][0]["l10n"].replace("{android_locale}", android_locale(locale))
-            for strings_xml_path in glob.glob(os.path.join(repo_path, "android-components", pathname), recursive=True):
+            for strings_xml_path in glob.glob(os.path.join(repo_path, project_path, pathname), recursive=True):
                 yield os.path.relpath(strings_xml_path, repo_path)
 
 
@@ -58,6 +58,10 @@ def inspect_path(p):
 
 
 if __name__ == "__main__":
+    project_path = os.environ.get("INPUT_PROJECT")
+    if project_path is None:
+        log("Empty INPUT_PROJECT. Exiting.")
+        sys.exit(1)
 
     src_repo_path = os.environ.get("INPUT_SRC")
     if src_repo_path is None:
@@ -82,12 +86,12 @@ if __name__ == "__main__":
     dst_repo = git.Repo(dst_repo_path)
 
     # Take the list of locales to sync from the destination repository
-    locales = release_locales(dst_repo_path)
+    locales = release_locales(dst_repo_path, project_path)
     if not locales:
         log("Could not determine locales to sync. Exiting.")
         sys.exit(1)
 
-    for path in all_strings_xml_paths(src_repo_path, locales):
+    for path in all_strings_xml_paths(src_repo_path, project_path, locales):
         try:
             src = os.path.join(src_repo_path, path)
             dst = os.path.join(dst_repo_path, path)
