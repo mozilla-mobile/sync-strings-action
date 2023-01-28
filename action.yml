@@ -1,18 +1,19 @@
-name: 'sync-strings-action'
-description: 'Sync strings from src to dst. Both src and dst need to be checked out repos.'
+name: sync-strings-action
+description: Sync Android strings between two folders (from src to dest).
 inputs:
-  project:
-    description: 'The project subdirectory to work on - android-components, fenix, focus-android.'
+  toml_path:
+    description: Path to project config file (TOML), relative to the folder's root
     required: true
   src:
-    description: "Source project"
+    description: Source folder
     required: true
-  dst:
-    description: "Destination project"
+  dest:
+    description: Destination folder
     required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: docker
+  image: Dockerfile
   args:
+    - ${{ inputs.toml_path }}
     - ${{ inputs.src }}
-    - ${{ inputs.dst }}
+    - ${{ inputs.dest }}

@@ -1,5 +1,4 @@
-FROM python:3.9
-
+FROM python:3.10
 
 WORKDIR /usr/src/app
 
@@ -12,4 +11,3 @@ RUN useradd -u 1001 runner
 USER runner
 
 ENTRYPOINT ["/usr/src/app/sync-strings.py"]
-

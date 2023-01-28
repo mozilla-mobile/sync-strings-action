@@ -1,14 +1,1 @@
-certifi==2020.6.20
-chardet==3.0.4
-Deprecated==1.2.10
-gitdb==4.0.7
-GitPython==3.1.14
-idna==2.10
-PyGithub==1.53
-PyJWT==1.7.1
-requests==2.24.0
-smmap==4.0.0
-tomlkit==0.7.0
-urllib3==1.25.11
-wrapt==1.12.1
-xmltodict==0.12.0
+compare-locales==8.2.*

@@ -1,30 +1,26 @@
 # Sync Strings GitHub Action
 
-This GitHub Action syncs strings between two checked out copies of an Android project. It requires that these projects have a a `l10n.toml` and optionally an `l10n-release.toml` file in their root.
+This GitHub Action syncs strings between two checked out copies of an Android project. It requires that these projects have a a `l10n.toml` project configuration.
 
 Example usage in a _GitHub Workflow_ file:
 
 ```
-      - name: "Checkout Master Branch"
-        uses: actions/checkout@v2
+      - name: Checkout main branch
+        uses: actions/checkout@v3
         with:
           path: main
-          ref: master
-      - name: "Checkout Beta Branch"
-        uses: actions/checkout@v2
+          ref: main
+      - name: Checkout beta branch
+        uses: actions/checkout@v3
         with:
           path: beta
           ref: releases_v88.0.0
-
-      - name: "Sync Strings"
-        uses: st3fan/sync-strings-action@main
+      - name: Sync strings
+        uses: mozilla-mobile/sync-strings-action@main
         with:
-          project: android-components
+          toml_path: android-components/l10n.toml
           src: main
-          dst: beta
-
+          dest: beta
 ```
 
-This action will `git add` and `git commit` the individual `strings.xml` files that are now or have changed. It will only do this in the working copy though - it will not create a PR or push these changes back. That can be the responsibility of another _Workflow Step_.
-
-See also the `sync-strings.yml` workflows in android-components and fenix.
+This action will copy individual `strings.xml` files from `src` to `dest`. Adding and committing them to the repository would be the responsibility of another step in the workflow.
