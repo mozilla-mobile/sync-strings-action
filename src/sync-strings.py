@@ -12,8 +12,9 @@ import sys
 
 def getAllFilesToml(toml_path, search_path):
     """
-    Extract a list of all files referenced in the project configuration file
-    (TOML). Files are stored with path relative to `search_path`.
+    Extract a list of all localized files referenced in the project
+    configuration file (TOML). Files are stored with path relative to
+    `search_path`.
     """
 
     basedir = os.path.dirname(toml_path)
@@ -22,10 +23,6 @@ def getAllFilesToml(toml_path, search_path):
 
     print(f"Analyzing files in {toml_path}")
     toml_files = []
-
-    files = paths.ProjectFiles(None, [project_config])
-    for l10n_file, reference_file, _, _ in files:
-        toml_files.append(os.path.relpath(reference_file, search_path))
 
     for locale in project_config.all_locales:
         files = paths.ProjectFiles(locale, [project_config])
